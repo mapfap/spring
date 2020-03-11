@@ -1,0 +1,15 @@
+spring:
+  profiles: default
+  main:
+    banner-mode: off
+  datasource:
+    url: jdbc:h2:mem:local
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: create
+logging:
+  level:
+    com:
+      mapfap:
+        spez: INFO

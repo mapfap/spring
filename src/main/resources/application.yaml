@@ -1,5 +1,7 @@
 spring:
   profiles: default
+  main:
+    banner-mode: off
   datasource:
     url: jdbc:h2:mem:local
     username: sa
@@ -8,7 +10,7 @@ spring:
       ddl-auto: create
   #    properties:
   #      hibernate:
-  #        show_sql: true
+  #        show_sql: false
   #        format_sql: false
   h2:
     console:

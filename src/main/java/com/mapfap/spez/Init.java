@@ -34,6 +34,7 @@ public class Init implements CommandLineRunner {
     }
 
     public void init(int numberOfProduct, int numberOfUser, int numberOfAddress, int numberOfOrder, int numberOfOrderItem) {
+        log.debug("Initializing data");
         Faker faker = new Faker();
 
         List<Product> productList = new ArrayList<>();
