@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +36,7 @@ public class OrderServiceTest {
 
     @Test
     public void save() {
-        Order order = orderService.createOrder(createOrder(10));
+        Order order = orderService.createOrder(createOrder(2));
         assertThat(order).isNotNull();
         assertThat(order.getScore()).isEqualTo(0);
         log.info(order.toString());

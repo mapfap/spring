@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.12'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'com.h2database:h2'
+    implementation 'org.hibernate:hibernate-validator:6.0.16.Final'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

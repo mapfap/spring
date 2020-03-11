@@ -4,10 +4,8 @@ import com.github.javafaker.Faker;
 import com.mapfap.spez.model.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;

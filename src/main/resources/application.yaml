@@ -1,3 +1,7 @@
+com:
+  mapfap:
+    spez:
+      name: yeah
 spring:
   profiles: default
   main:
