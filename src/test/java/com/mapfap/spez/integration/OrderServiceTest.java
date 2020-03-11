@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,23 +27,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OrderServiceTest {
 
     private final OrderRepository orderRepository;
-
-//    private final PricingRepository pricingRepository;
-
     private final OrderService orderService;
 
     @Test
+    public void raceCondition() {
+        // TODO: This need to be equalsTo 10
+        assertThat(orderService.race(createOrder(10))).isGreaterThan(0);
+    }
+
+    @Test
+    public void save() {
+        Order order = orderService.createOrder(createOrder(10));
+        assertThat(order).isNotNull();
+        assertThat(order.getScore()).isEqualTo(0);
+        log.info(order.toString());
+    }
+
+    @Test
     public void testPricing() {
-        Order order = Order.builder().build();
-        Stream.of(
-                OrderItem.builder().build(),
-                OrderItem.builder().build(),
-                OrderItem.builder().build(),
-                OrderItem.builder().build(),
-                OrderItem.builder().build(),
-                OrderItem.builder().build()
-                ).forEach(order::addItem);
-        assertThat(orderService.getTotalPrice(order)).isGreaterThan(BigDecimal.ZERO);
+        assertThat(orderService.getTotalPrice(createOrder(10))).isGreaterThan(BigDecimal.ZERO);
     }
 
     @Test
@@ -50,5 +53,12 @@ public class OrderServiceTest {
     public void testContext() {
         assertThat(orderRepository).isNotNull();
         assertThat(orderRepository.findAll()).hasSize(1);
+    }
+
+    private Order createOrder(int numberOfItem) {
+        Order order = Order.builder().build();
+        IntStream.range(0, numberOfItem).forEach(i ->
+                order.addItem(OrderItem.builder().build()));
+        return order;
     }
 }

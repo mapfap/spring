@@ -13,3 +13,6 @@ logging:
     com:
       mapfap:
         spez: INFO
+    org:
+      hibernate:
+        SQL: DEBUG

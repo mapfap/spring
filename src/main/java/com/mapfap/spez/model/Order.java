@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 @Entity
 @Builder
 @AllArgsConstructor
@@ -24,6 +25,9 @@ public class Order {
     private Long id;
 
     private Instant createdAt;
+
+    @Builder.Default
+    private Integer score = 0;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
