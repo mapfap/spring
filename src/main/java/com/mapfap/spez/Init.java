@@ -6,7 +6,6 @@ import com.mapfap.spez.repository.AddressRepositry;
 import com.mapfap.spez.repository.OrderRepository;
 import com.mapfap.spez.repository.ProductRepository;
 import com.mapfap.spez.repository.UserRepository;
-import com.mapfap.spez.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -29,66 +28,63 @@ public class Init implements CommandLineRunner {
 
     private final ProductRepository productRepository;
 
-    private final OrderService orderService;
-
     @Override
     public void run(String... args) throws Exception {
-        log.info("Init data records");
+        init(5, 1, 1, 1, 2);
+    }
+
+    public void init(int numberOfProduct, int numberOfUser, int numberOfAddress, int numberOfOrder, int numberOfOrderItem) {
         Faker faker = new Faker();
 
         List<Product> productList = new ArrayList<>();
-        for (int p = 0; p < 1000; p++) {
+        for (int p = 0; p < numberOfProduct; p++) {
             Product product = Product.builder()
                     .name(faker.food().dish())
                     .build();
-            productRepository.saveAndFlush(product);
+            productRepository.save(product);
             productList.add(product);
         }
 
-        for (int u = 0; u < 20; u++) {
-            log.info(String.format("User#%d", u));
+        for (int u = 0; u < numberOfUser; u++) {
             User user = User.builder()
                     .name(faker.animal().name())
                     .createdAt(Instant.now())
                     .build();
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
 
             List<Address> addressList = new ArrayList<>();
 
-            for (int a = 0; a < 3; a++) {
+            for (int a = 0; a < numberOfAddress; a++) {
                 Address address = Address.builder()
                         .user(user)
                         .street(faker.address().streetAddress())
                         .city(faker.address().city())
                         .postalCode(faker.address().zipCode())
                         .build();
-                addressRepositry.saveAndFlush(address);
+                addressRepositry.save(address);
                 addressList.add(address);
             }
 
-            for (int o = 0; o < 50; o++) {
+            for (int o = 0; o < numberOfOrder; o++) {
                 Order order = Order.builder()
-                        .address(addressList.get(faker.number().numberBetween(0, 2)))
+                        .address(addressList.get(faker.number().numberBetween(0, addressList.size() - 1)))
                         .user(user)
                         .createdAt(Instant.now())
                         .build();
 
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < numberOfOrderItem; i++) {
                     OrderItem item = OrderItem.builder()
-                            .product(productList.get(faker.number().numberBetween(0, 999)))
+                            .product(productList.get(faker.number().numberBetween(0, productList.size() - 1)))
                             .quantity(faker.number().numberBetween(1, 10))
                             .build();
                     order.addItem(item);
                 }
 
-                orderRepository.saveAndFlush(order);
+                orderRepository.save(order);
             }
-
         }
 
-
-        log.info(".....................");
-        log.info(".....................");
-        log.info(".....................");
+        orderRepository.flush();
+        log.info("Initialized data");
     }
 }
